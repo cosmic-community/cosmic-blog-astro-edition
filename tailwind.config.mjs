@@ -5,17 +5,17 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
+          50: '#fff7ed',   // Changed: orange-50
+          100: '#ffedd5',  // Changed: orange-100
+          200: '#fed7aa',  // Changed: orange-200
+          300: '#fdba74',  // Changed: orange-300
+          400: '#fb923c',  // Changed: orange-400
+          500: '#f97316',  // Changed: orange-500
+          600: '#ea580c',  // Changed: orange-600
+          700: '#c2410c',  // Changed: orange-700
+          800: '#9a3412',  // Changed: orange-800
+          900: '#7c2d12',  // Changed: orange-900
+          950: '#431407',  // Changed: orange-950
         },
         neutral: {
           850: '#1f2028',
@@ -37,9 +37,9 @@ export default {
             maxWidth: '75ch',
             color: '#374151',
             a: {
-              color: '#4f46e5',
+              color: '#ea580c',  // Changed: primary-600 orange
               '&:hover': {
-                color: '#4338ca',
+                color: '#c2410c',  // Changed: primary-700 orange
               },
             },
             h1: { color: '#111827' },
@@ -48,7 +48,7 @@ export default {
             h4: { color: '#111827' },
             strong: { color: '#111827' },
             blockquote: {
-              borderLeftColor: '#6366f1',
+              borderLeftColor: '#f97316',  // Changed: primary-500 orange
             },
           },
         },
