@@ -5,17 +5,17 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#fff7ed',   // Changed: orange-50
-          100: '#ffedd5',  // Changed: orange-100
-          200: '#fed7aa',  // Changed: orange-200
-          300: '#fdba74',  // Changed: orange-300
-          400: '#fb923c',  // Changed: orange-400
-          500: '#f97316',  // Changed: orange-500
-          600: '#ea580c',  // Changed: orange-600
-          700: '#c2410c',  // Changed: orange-700
-          800: '#9a3412',  // Changed: orange-800
-          900: '#7c2d12',  // Changed: orange-900
-          950: '#431407',  // Changed: orange-950
+          50: '#fef2f2',   // Changed: red-50
+          100: '#fee2e2',  // Changed: red-100
+          200: '#fecaca',  // Changed: red-200
+          300: '#fca5a5',  // Changed: red-300
+          400: '#f87171',  // Changed: red-400
+          500: '#ef4444',  // Changed: red-500
+          600: '#dc2626',  // Changed: red-600
+          700: '#b91c1c',  // Changed: red-700
+          800: '#991b1b',  // Changed: red-800
+          900: '#7f1d1d',  // Changed: red-900
+          950: '#450a0a',  // Changed: red-950
         },
         neutral: {
           850: '#1f2028',
@@ -37,9 +37,9 @@ export default {
             maxWidth: '75ch',
             color: '#374151',
             a: {
-              color: '#ea580c',  // Changed: primary-600 orange
+              color: '#dc2626',  // Changed: primary-600 red
               '&:hover': {
-                color: '#c2410c',  // Changed: primary-700 orange
+                color: '#b91c1c',  // Changed: primary-700 red
               },
             },
             h1: { color: '#111827' },
@@ -48,7 +48,7 @@ export default {
             h4: { color: '#111827' },
             strong: { color: '#111827' },
             blockquote: {
-              borderLeftColor: '#f97316',  // Changed: primary-500 orange
+              borderLeftColor: '#ef4444',  // Changed: primary-500 red
             },
           },
         },
