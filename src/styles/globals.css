@@ -23,7 +23,8 @@
     @apply shadow-lg border-gray-200 -translate-y-1;
   }
 
+  /* Changed: Improved category badge with better padding, letter-spacing, font size, and smooth transition */
   .category-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase;
+    @apply inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200;
   }
 }

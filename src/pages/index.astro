@@ -40,10 +40,11 @@ const remainingPosts = sortedPosts.slice(1)
     {categories.length > 0 && (
       <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 mb-12">
         <div class="flex flex-wrap justify-center gap-3">
+          {/* Changed: Improved category tag buttons with shadow, better colors, and hover transform */}
           {categories.map((cat) => (
             <a
               href={`/categories/${cat.slug}`}
-              class="category-badge bg-white text-gray-600 border border-gray-200 hover:bg-primary-50 hover:text-primary-700 hover:border-primary-200 transition-all"
+              class="category-badge bg-white text-gray-600 border border-gray-200 shadow-sm hover:bg-primary-50 hover:text-primary-700 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5"
             >
               🏷️ {cat.metadata.name}
             </a>
