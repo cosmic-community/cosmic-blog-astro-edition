@@ -1,0 +1,70 @@
+---
+// src/pages/categories/[slug].astro
+import Layout from '@/layouts/Layout.astro'
+import Header from '@/components/Header.astro'
+import Footer from '@/components/Footer.astro'
+import PostCard from '@/components/PostCard.astro'
+import { getAllCategories, getCategoryBySlug, getPostsByCategory } from '@/lib/cosmic'
+
+export async function getStaticPaths() {
+  const categories = await getAllCategories()
+  return categories.map((cat) => ({
+    params: { slug: cat.slug },
+  }))
+}
+
+const { slug } = Astro.params
+const category = await getCategoryBySlug(slug as string)
+
+if (!category) {
+  return Astro.redirect('/404')
+}
+
+const posts = await getPostsByCategory(category.id)
+
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.created_at || '').getTime()
+  const dateB = new Date(b.created_at || '').getTime()
+  return dateB - dateA
+})
+---
+
+<Layout
+  title={`${category.metadata?.name || category.title} — Cosmic Blog`}
+  description={category.metadata?.description || `Posts about ${category.metadata?.name || category.title}`}
+>
+  <Header />
+
+  <main class="flex-1">
+    <section class="bg-gradient-to-b from-primary-50/60 to-white py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <span class="category-badge bg-primary-100 text-primary-700 mb-4">🏷️ Category</span>
+        <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mt-4 mb-4">
+          {category.metadata?.name || category.title}
+        </h1>
+        {category.metadata?.description && (
+          <p class="text-lg text-gray-500 max-w-2xl mx-auto">{category.metadata.description}</p>
+        )}
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {sortedPosts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedPosts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="text-xl text-gray-400">No posts in this category yet.</p>
+          <a href="/" class="inline-block mt-4 text-primary-600 hover:text-primary-700 font-medium">
+            ← Back to Home
+          </a>
+        </div>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

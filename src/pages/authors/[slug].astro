@@ -1,0 +1,106 @@
+---
+// src/pages/authors/[slug].astro
+import Layout from '@/layouts/Layout.astro'
+import Header from '@/components/Header.astro'
+import Footer from '@/components/Footer.astro'
+import PostCard from '@/components/PostCard.astro'
+import { getAllAuthors, getAuthorBySlug, getPostsByAuthor } from '@/lib/cosmic'
+
+export async function getStaticPaths() {
+  const authors = await getAllAuthors()
+  return authors.map((author) => ({
+    params: { slug: author.slug },
+  }))
+}
+
+const { slug } = Astro.params
+const author = await getAuthorBySlug(slug as string)
+
+if (!author) {
+  return Astro.redirect('/404')
+}
+
+const posts = await getPostsByAuthor(author.id)
+
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.created_at || '').getTime()
+  const dateB = new Date(b.created_at || '').getTime()
+  return dateB - dateA
+})
+
+const profilePhoto = author.metadata?.profile_photo
+---
+
+<Layout
+  title={`${author.metadata?.name || author.title} — Cosmic Blog`}
+  description={author.metadata?.bio || `Posts by ${author.metadata?.name || author.title}`}
+>
+  <Header />
+
+  <main class="flex-1">
+    <section class="bg-gradient-to-b from-primary-50/60 to-white py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center text-center">
+          {profilePhoto ? (
+            <img
+              src={`${profilePhoto.imgix_url}?w=256&h=256&fit=crop&auto=format,compress`}
+              alt={author.metadata?.name || author.title}
+              class="w-28 h-28 rounded-full object-cover ring-4 ring-white shadow-lg mb-6"
+              width="112"
+              height="112"
+            />
+          ) : (
+            <div class="w-28 h-28 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold text-4xl ring-4 ring-white shadow-lg mb-6">
+              {(author.metadata?.name || author.title).charAt(0)}
+            </div>
+          )}
+
+          <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
+            {author.metadata?.name || author.title}
+          </h1>
+
+          {author.metadata?.bio && (
+            <p class="text-lg text-gray-500 max-w-xl">{author.metadata.bio}</p>
+          )}
+
+          {author.metadata?.social_link && (
+            <a
+              href={author.metadata.social_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 mt-4 text-primary-600 hover:text-primary-700 font-medium text-sm"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              Follow
+            </a>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h2 class="text-sm font-semibold text-primary-600 uppercase tracking-wider mb-6">
+        Posts by {author.metadata?.name || author.title}
+      </h2>
+
+      {sortedPosts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedPosts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="text-xl text-gray-400">No posts by this author yet.</p>
+          <a href="/" class="inline-block mt-4 text-primary-600 hover:text-primary-700 font-medium">
+            ← Back to Home
+          </a>
+        </div>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

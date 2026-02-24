@@ -1,0 +1,102 @@
+---
+// src/pages/posts/[slug].astro
+import Layout from '@/layouts/Layout.astro'
+import Header from '@/components/Header.astro'
+import Footer from '@/components/Footer.astro'
+import { getAllPosts, getPostBySlug } from '@/lib/cosmic'
+import { renderMarkdown } from '@/lib/markdown'
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts()
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }))
+}
+
+const { slug } = Astro.params
+const post = await getPostBySlug(slug as string)
+
+if (!post) {
+  return Astro.redirect('/404')
+}
+
+const htmlContent = renderMarkdown(post.metadata?.content || '')
+const author = post.metadata?.author
+const category = post.metadata?.category
+const featuredImage = post.metadata?.featured_image
+const createdAt = post.created_at
+  ? new Date(post.created_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : ''
+---
+
+<Layout
+  title={`${post.title} — Cosmic Blog`}
+  description={post.metadata?.content?.slice(0, 160).replace(/[#*\n]/g, '')}
+  image={featuredImage?.imgix_url ? `${featuredImage.imgix_url}?w=1200&h=630&fit=crop&auto=format,compress` : undefined}
+>
+  <Header />
+
+  <main class="flex-1">
+    {/* Hero Image */}
+    {featuredImage && (
+      <div class="w-full max-h-[480px] overflow-hidden bg-gray-100">
+        <img
+          src={`${featuredImage.imgix_url}?w=1600&h=960&fit=crop&auto=format,compress`}
+          alt={post.title}
+          class="w-full h-full object-cover"
+          width="800"
+          height="480"
+        />
+      </div>
+    )}
+
+    <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      {/* Category Badge */}
+      {category && (
+        <a
+          href={`/categories/${category.slug}`}
+          class="category-badge bg-primary-50 text-primary-700 hover:bg-primary-100 transition-colors mb-4"
+        >
+          {category.metadata?.name || category.title}
+        </a>
+      )}
+
+      {/* Title */}
+      <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6">
+        {post.title}
+      </h1>
+
+      {/* Meta bar */}
+      <div class="flex items-center gap-4 pb-8 mb-8 border-b border-gray-100">
+        {author && (
+          <a href={`/authors/${author.slug}`} class="flex items-center gap-3 group">
+            {author.metadata?.profile_photo && (
+              <img
+                src={`${author.metadata.profile_photo.imgix_url}?w=80&h=80&fit=crop&auto=format,compress`}
+                alt={author.metadata?.name || author.title}
+                class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-100"
+                width="40"
+                height="40"
+              />
+            )}
+            <div>
+              <p class="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                {author.metadata?.name || author.title}
+              </p>
+              {createdAt && <p class="text-xs text-gray-400">{createdAt}</p>}
+            </div>
+          </a>
+        )}
+      </div>
+
+      {/* Content */}
+      <div class="prose prose-lg max-w-none" set:html={htmlContent} />
+    </article>
+  </main>
+
+  <Footer />
+</Layout>

@@ -1,0 +1,77 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear()
+const bucketSlug = import.meta.env.COSMIC_BUCKET_SLUG || ''
+---
+
+<footer class="bg-gray-50 border-t border-gray-100 mt-auto">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">📝</span>
+        <span class="text-lg font-bold text-gray-900">Cosmic Blog</span>
+      </div>
+      <p class="text-sm text-gray-500">
+        &copy; {currentYear} Cosmic Blog. Built with
+        <a href="https://astro.build/" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700 font-medium">Astro</a>
+        &
+        <a href="https://www.cosmicjs.com" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700 font-medium">Cosmic</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Built with Cosmic Badge -->
+<a
+  id="cosmic-badge"
+  href={`https://www.cosmicjs.com?utm_source=bucket_${bucketSlug}&utm_medium=referral&utm_campaign=app_badge&utm_content=built_with_cosmic`}
+  target="_blank"
+  rel="noopener noreferrer"
+  style="position:fixed;bottom:20px;right:20px;display:inline-flex;align-items:center;gap:8px;color:#11171A;text-decoration:none;font-size:14px;font-weight:500;background-color:white;border:1px solid #e5e7eb;padding:12px 16px;width:180px;border-radius:8px;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background-color 0.2s ease;font-family:system-ui,-apple-system,sans-serif;"
+>
+  <button
+    id="cosmic-dismiss"
+    style="position:absolute;top:-8px;right:-8px;width:24px;height:24px;background:#f3f4f6;border:none;border-radius:50%;color:#374151;font-size:16px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background-color 0.2s;z-index:10;"
+    aria-label="Dismiss badge"
+  >×</button>
+  <img
+    src="https://cdn.cosmicjs.com/b67de7d0-c810-11ed-b01d-23d7b265c299-logo508x500.svg"
+    alt="Cosmic Logo"
+    style="width:20px;height:20px;"
+  />
+  Built with Cosmic
+</a>
+
+<script is:inline>
+  (function() {
+    var badge = document.getElementById('cosmic-badge');
+    var dismiss = document.getElementById('cosmic-dismiss');
+
+    if (localStorage.getItem('cosmic-badge-dismissed')) {
+      if (badge) badge.style.display = 'none';
+      return;
+    }
+
+    if (dismiss && badge) {
+      dismiss.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        badge.style.display = 'none';
+        localStorage.setItem('cosmic-badge-dismissed', 'true');
+      });
+
+      badge.addEventListener('mouseenter', function() {
+        badge.style.backgroundColor = '#f9fafb';
+      });
+      badge.addEventListener('mouseleave', function() {
+        badge.style.backgroundColor = 'white';
+      });
+      dismiss.addEventListener('mouseenter', function() {
+        dismiss.style.backgroundColor = '#e5e7eb';
+      });
+      dismiss.addEventListener('mouseleave', function() {
+        dismiss.style.backgroundColor = '#f3f4f6';
+      });
+    }
+  })();
+</script>

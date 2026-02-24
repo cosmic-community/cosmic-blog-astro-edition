@@ -1,0 +1,41 @@
+---
+// src/pages/authors/index.astro
+import Layout from '@/layouts/Layout.astro'
+import Header from '@/components/Header.astro'
+import Footer from '@/components/Footer.astro'
+import AuthorCard from '@/components/AuthorCard.astro'
+import { getAllAuthors } from '@/lib/cosmic'
+
+const authors = await getAllAuthors()
+---
+
+<Layout title="Authors — Cosmic Blog" description="Meet the authors behind our blog posts.">
+  <Header />
+
+  <main class="flex-1">
+    <section class="bg-gradient-to-b from-primary-50/60 to-white py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">Our Authors</h1>
+        <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+          Meet the talented writers behind our blog posts.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {authors.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {authors.map((author) => (
+            <AuthorCard author={author} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="text-xl text-gray-400">No authors found.</p>
+        </div>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

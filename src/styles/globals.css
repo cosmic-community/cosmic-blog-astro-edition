@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white text-gray-900 font-sans;
+  }
+}
+
+@layer components {
+  .post-card {
+    @apply bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300;
+  }
+
+  .post-card:hover {
+    @apply shadow-lg border-gray-200 -translate-y-1;
+  }
+
+  .category-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase;
+  }
+}
