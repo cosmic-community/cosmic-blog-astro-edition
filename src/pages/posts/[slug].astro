@@ -55,11 +55,11 @@ const createdAt = post.created_at
     )}
 
     <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-      {/* Changed: Improved category badge on post detail with border, shadow, and hover effect */}
+      {/* Changed: Removed hover animation classes (hover:shadow-md, hover:-translate-y-0.5) */}
       {category && (
         <a
           href={`/categories/${category.slug}`}
-          class="category-badge bg-primary-50 text-primary-700 border border-primary-100 shadow-sm hover:bg-primary-100 hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 mb-4"
+          class="category-badge bg-primary-50 text-primary-700 border border-primary-100 shadow-sm hover:bg-primary-100 hover:border-primary-200 mb-4"
         >
           {category.metadata?.name || category.title}
         </a>
